@@ -1,0 +1,94 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+  {% block title %}
+   The BLog's
+  {% endblock  %}
+
+    {% block content %}
+
+        <h1> {{ object.title }}</h1>
+        <small>By: {{ object.author.first_name }} 
+        {{ object.author.last_name }} -{{ object.post_date }}</small>-
+
+        {% if user.is_authenticated %}
+            {% if user.id == post.author.id %}
+                <a href=" {% url 'update_post' object.pk %} ">Edit</a> -
+                <a href=" {% url 'delete_post' object.pk %} ">Delete</a></br>
+              {% endif %}
+        {% endif %}
+        <br>
+        <hr>
+     
+        <!--<img class="rounded-3" src=" {{ object.header_image.url }} " width="200" height="200">-->
+    
+
+        <br><br>
+
+
+        {{ object.body|safe }}
+        <br><br>
+        
+        <div class="card mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-2">
+            {% if object.author.profile.profile_picture %}
+              <img src="{{ object.author.profile.profile_picture.url }}" class="card-img"  >
+
+            {% else %}
+            <img src=" {% static 'images/null.jpg'  %}" width='200' height='200' alt="">
+
+            {%endif %}
+
+            </div>
+          
+       
+       <div class="col-md-10">
+         <div class="card-body">
+           <h5 class="card-title">
+            {{ object.author.first_name }} 
+            {{ object.author.last_name }}
+           </h5>
+           <p class="small text-muted">
+
+           <a href="{% url 'show_profile' object.author.profile.id  %}">Profile Page</a>
+
+              {% if  object.author.profile.fb_url %}
+                <a href="{{ object.author.profile.fb_url }}">Facebook</a>
+              {% endif %}
+
+              {% if  object.author.profile.website_url%}
+              |  <a href="{{ object.author.profile.website_url }}">Website</a>
+              {% endif %}
+
+              {% if  object.author.profile.twitter_url %}
+              |  <a href="{{ object.author.profile.twitter_url }}">Twitter</a>
+              {% endif %}
+
+              {% if  object.author.profile.insta_url %}  
+              |  <a href="{{ object.author.profile.insta_url }}">Instagram</a>
+              {% endif %}
+          </p>
+
+          <p class="card-text">
+             {{ object.author.profile.bio }}
+           </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+          
+        
+
+        <!--<img class="rounded-circle" src="{{ object.author.profile.profile_picture.url }}" width="200" height="200" alt="">-->
+        
+        <br><br>
+    
+    
+        <a href=" {% url 'home' %}" class="btn btn-secondary">Back</a>
+
+    
+
+    {% endblock  %}
