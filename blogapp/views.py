@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView, DetailView,CreateView,UpdateView,DeleteView
-from .models import Post,Category
-from .forms import PostForm,EditForm
+from .models import Post,Category,Comment
+from .forms import PostForm,EditForm,CommentForm
 from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect
 
@@ -63,7 +63,13 @@ class DeletePostView(DeleteView):
     fields='__all__'
     success_url= reverse_lazy('home')
 
+class AddCommnetView(CreateView):
+    model = Comment
+    form_class= CommentForm
+    template_name = 'add_comment.html'
+    #fields = '__all__'
 
-
-
+    def form_valid(self,form):
+        form.instance.post_id= self.kwargs['pk']
+        return super().form_valid(form)
 

@@ -1,16 +1,16 @@
 {% extends 'main.html' %}
 {% load static %}
 
-
-  {% block title %}
+{% block title %}
    The BLog's
-  {% endblock  %}
+{% endblock  %}
 
-    {% block content %}
+{% block content %}
 
-        <h1> {{ object.title }}</h1>
-        <small>By: {{ object.author.first_name }} 
-        {{ object.author.last_name }} -{{ object.post_date }}</small>-
+  <h1> {{ object.title }}</h1>
+
+  <small>By: {{ object.author.first_name }} 
+      {{ object.author.last_name }} -{{ object.post_date }}</small>-
 
         {% if user.is_authenticated %}
             {% if user.id == post.author.id %}
@@ -18,18 +18,17 @@
                 <a href=" {% url 'delete_post' object.pk %} ">Delete</a></br>
               {% endif %}
         {% endif %}
+
         <br>
         <hr>
-     
-        <!--<img class="rounded-3" src=" {{ object.header_image.url }} " width="200" height="200">-->
-    
-
+     <br><br>
+{{ object.body|safe }}
         <br><br>
 
 
-        {{ object.body|safe }}
-        <br><br>
-        
+
+        <!--*********Profile Section Starts here***************** -->
+
         <div class="card mb-3">
           <div class="row no-gutters">
             <div class="col-md-2">
@@ -55,18 +54,18 @@
            <a href="{% url 'show_profile' object.author.profile.id  %}">Profile Page</a>
 
               {% if  object.author.profile.fb_url %}
-                <a href="{{ object.author.profile.fb_url }}">Facebook</a>
+              | <a href="{{ object.author.profile.fb_url }}">Facebook</a>
               {% endif %}
 
-              {% if  object.author.profile.website_url%}
-              |  <a href="{{ object.author.profile.website_url }}">Website</a>
+              {% if  object.author.profile.website_url %}
+              |  <a href="{{ object.author.proile.website_url }}">Website</a>
               {% endif %}
 
               {% if  object.author.profile.twitter_url %}
               |  <a href="{{ object.author.profile.twitter_url }}">Twitter</a>
               {% endif %}
 
-              {% if  object.author.profile.insta_url %}  
+              {% if  object.author.profile.insta_url %}
               |  <a href="{{ object.author.profile.insta_url }}">Instagram</a>
               {% endif %}
           </p>
@@ -79,13 +78,39 @@
       </div>
     </div>
   </div>
-          
-        
-
-        <!--<img class="rounded-circle" src="{{ object.author.profile.profile_picture.url }}" width="200" height="200" alt="">-->
         
         <br><br>
-    
+<!--*********Profile Section Ends here***************** -->
+
+
+        <!--*********Comment Section Starts here***************** -->
+
+        <h2>Comment</h2>
+        {% if not object.comments.all %}
+           No Comments Yet.. <a href="{% url 'add_comment' object.pk %}">Add comment</a>
+        {% else %}
+        <br>
+
+        <a href="{% url 'add_comment' object.pk %}">Add comment</a>
+        <br>
+            {%for comment in object.comments.all %} 
+          <strong>
+            {{ comment.name }}
+            {{ comment.date_added }}
+          </strong>
+          <br>
+          {{ comment.body }}
+          <br><br>
+          
+          {% endfor %}
+        {% endif %}
+      <br>
+      
+      <br>
+      <hr>
+      <!--*********Comment Section Ends here***************** -->
+
+
     
         <a href=" {% url 'home' %}" class="btn btn-secondary">Back</a>
 

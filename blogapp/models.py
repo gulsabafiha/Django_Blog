@@ -16,9 +16,10 @@ class Category(models.Model):
 
 
 class Profile(models.Model):
+    id = models.BigAutoField(primary_key=True,null=False)
     user=models.OneToOneField(User,null=True,on_delete=models.CASCADE)
     bio=models.TextField()
-    id = models.BigAutoField(primary_key=True,null=False)
+    
     profile_picture=models.ImageField(null=True,blank=True,upload_to='static/images')
     fb_url=models.CharField(max_length=255,blank=True,null=True)
     website_url=models.CharField(max_length=255,blank=True,null=True)
@@ -31,7 +32,7 @@ class Profile(models.Model):
 
 class Post(models.Model):
     title= models.CharField(max_length=250)
-    id = models.BigAutoField(primary_key=True,null=False)
+    id = models.BigAutoField(primary_key=True, null=False)
     header_image=models.ImageField(blank=True, null=True,upload_to='static/images')
     author=models.ForeignKey(User,on_delete= models.CASCADE)
     body= RichTextField()
@@ -45,6 +46,19 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title 
+
+    def get_absolute_url(self):
+        #return reverse("article_detail", kwargs={"pk": self.pk})
+        return reverse('home')
+
+class Comment(models.Model):
+    post=models.ForeignKey(Post, related_name="comments" ,on_delete=models.CASCADE)
+    name=models.CharField(max_length=250)
+    body=models.TextField()
+    date_added=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.post.title, self.name)
 
     def get_absolute_url(self):
         #return reverse("article_detail", kwargs={"pk": self.pk})

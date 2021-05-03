@@ -6,15 +6,17 @@
 <h1>User Profile</h1>
 
 {{ page_user }}
+
+
 <hr>
 <div class="card mb-3">
     <div class="row no-gutters">
       <div class="col-md-2">
       {% if page_user.profile_picture %}
-        <img src="{{ page_user.profile_picture.url }}" class="card-img"  >
+        <img src="{{ page_user.profile_picture.url }}" class="card-img">
 
       {% else %}
-      <img src=" {% static 'images/null.jpg'  %}" width='200' height='200' alt="">
+        <img src=" {% static 'images/null.jpg'  %}" width='200' height='200'>
 
       {%endif %}
 
@@ -24,8 +26,9 @@
  <div class="col-md-10">
    <div class="card-body">
      <h5 class="card-title">
-      {{ page_user.user.first_name }} 
-      {{ page_user.user.last_name }}
+      
+      {{ page_user.first_name }} 
+      {{ page_user.last_name }}
      </h5>
 
 
@@ -58,7 +61,7 @@
 </div>
 </div>
 </div>
-    
+
   
 
 {% endblock  %}

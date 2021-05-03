@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% block title %}Comment on blog{% endblock  %}
+
+{% block content %}
+
+
+    <h1>Add Comment</h1>
+    <br><br>
+    <div class="form-group">
+        <form action="" method='POST'>
+            {% csrf_token %}
+    
+            {{ form.as_p }}
+
+            <button class='btn btn-secondary'>Done</button>
+        </form>
+    </div>
+ 
+
+{% endblock  %}

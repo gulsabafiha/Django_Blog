@@ -9,21 +9,30 @@ from blogapp.models import Profile
 
 
 class ShowProfilePageView(DetailView):
-    model=Profile
-    template_name='registration/user_profile.html'
-
+    model= Profile
+    template_name= 'registration/user_profile.html'
+    
 
     def get_context_data(self,*args, **kwargs):
-        user =Profile.objects.all()
+        users=Profile.objects.all()
         context = super(ShowProfilePageView,self).get_context_data(*args,**kwargs)
         page_user=get_object_or_404(Profile, id=self.kwargs['pk'])
         context['page_user']= page_user
         return context
-
-
+"""
+def detail_view(request, pk):
+    # dictionary for initial data with 
+    # field names as keys
+    context ={}
+  
+    # add the dictionary during initialization
+    context["data"] = Profile.objects.get(id = pk)
+          
+    return render(request, "user_profile.html", context)
+"""
 
 class EditProfilePageView(generic.UpdateView):
-    model=Profile 
+    model= Profile 
     template_name='registration/edit_profile.html'
     fields=['bio','profile_picture','website_url','fb_url','twitter_url','insta_url']
     success_url=reverse_lazy('home')
@@ -32,10 +41,14 @@ class CreateProfilePageView(CreateView):
     model=Profile
     template_name='registration/create_profile.html'
     fields='__all__'
-    
+    success_url=reverse_lazy('home')
+
+
     def form_valid(self,form):
         form.instance.user=self.request.user
         return super().form_valid(form)
+        
+
 
 class PasswordsChangeView(PasswordChangeView):
     #form_class=PasswordChangeForm
